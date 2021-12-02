@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
 
+import { initializeApp } from 'firebase/app';
+import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import { API_KEY } from "@env"
+
+
+const firebaseConfig = {
+    apiKey: API_KEY,
+    authDomain: 'wainapp-15c95.firebaseapp.com',
+    databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
+    projectID: 'wainapp',
+    storageBucket: 'wainapp-15c95.appspot.com',
+    messagingSenderId: '666700246264'
+}
+
+const app = initializeApp(firebaseConfig)
+const database = getDatabase(app)
+
 export const ItemViewer = ({ navigation, route }) => {
+
+    const [iconName, setIconName] = useState('hearto')
 
     const wine = route.params.wine;
     const routeFrom = route.params.from;
@@ -14,6 +33,49 @@ export const ItemViewer = ({ navigation, route }) => {
         wine.type = 'Valkoviini'
     } else if (wine.type === 'rose') {
         wine.type === 'Roseeviini'
+    }
+
+    const saveItem = (item) => {
+        //console.log(item);
+        push(ref(database, 'wines/'), {
+            'name': item.name,
+            'type': item.type,
+            'img': item.img,
+            'country': item.country,
+            'description': item.description,
+            'id': item.id,
+        })
+    }
+
+    const removeItem = (item) => {
+        //console.log(item.id, 'to be removed');
+        onValue(ref(database, 'wines/'), (snapshot) => {
+            const data = snapshot.val()
+            if (data === null) {
+                return;
+            } else {
+                const keyData = Object.entries(data)
+                //console.log(keyData);
+                for (const key of keyData) {
+                    const dbKey = key[0]
+                    if (key[1].id === item.id) {
+                        remove(ref(database, 'wines/' + dbKey))
+                        //console.log('data poistettu');
+                    }
+                }
+            }
+        })
+    }
+
+    const selectItem = (item) => {
+        if (iconName === 'hearto') {
+            setIconName('heart')
+            saveItem(item)
+        }
+        if (iconName === 'heart') {
+            setIconName('hearto')
+            removeItem(item)
+        }
     }
 
     return (
@@ -27,7 +89,9 @@ export const ItemViewer = ({ navigation, route }) => {
                             <AntDesign name="arrowleft" size={24} color="#FFF" onPress={() => navigation.navigate(routeFrom)} />
                             <Text style={{ marginLeft: 10 }}>Back</Text>
                         </Back>
-                        <AntDesign name='hearto' size={30} color='#fff' />
+                        <AntDesign name={iconName}
+                            size={30} color='#fff'
+                            onPress={() => selectItem(wine)} />
                     </MenuBar>
                     <WineImage source={{ uri: wine.img }} />
                     <WineView>

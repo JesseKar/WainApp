@@ -4,10 +4,11 @@ import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
+import { API_KEY } from "@env"
 
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyBW0CAZBOBd74YFeD-HkemzDiSE0sfGPco',
+    apiKey: API_KEY,
     authDomain: 'wainapp-15c95.firebaseapp.com',
     databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
     projectID: 'wainapp',
@@ -146,7 +147,7 @@ const WineImage = styled.Image`
     border-radius: 8px;
 `;
 
-const WineInfo = styled.TouchableOpacity`
+const WineInfo = styled.View`
     flex: 1;
     margin-left: 12px;
     margin-right: 16px;

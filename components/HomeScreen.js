@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
-import { API_URL } from "@env"
+import { API_URL, API_KEY } from "@env"
 
 
 const SUGGEST_URL = API_URL
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyBW0CAZBOBd74YFeD-HkemzDiSE0sfGPco',
+    apiKey: API_KEY,
     authDomain: 'wainapp-15c95.firebaseapp.com',
     databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
     projectID: 'wainapp',
@@ -131,7 +131,9 @@ export default function HomeScreen({ navigation }) {
                                         <Text large heavy >{item.name}</Text>
                                         <Text small bold >{item.country} | {item.type}</Text>
                                     </WineInfo>
-                                    <AntDesign name={selectedIndex.indexOf(index) > -1 ? 'heart' : 'hearto'} size={24} color='#FFF' onPress={() => selectItem(index, item)} />
+                                    <AntDesign name={selectedIndex.indexOf(index) > -1 ? 'heart' : 'hearto'}
+                                        size={24} color='#FFF'
+                                        onPress={() => selectItem(index, item)} />
                                 </Wine>
                             )}
                             data={wines}

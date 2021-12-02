@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StatusBar, Alert, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StatusBar, Alert, ActivityIndicator, LogBox } from 'react-native';
 import { SearchFilter } from "./SearchFilter";
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
-import { API_URL } from "@env"
+import { API_URL, API_KEY } from "@env";
 
+LogBox.ignoreLogs(['Setting a timer']);
 
 const BASE_URL = API_URL
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyBW0CAZBOBd74YFeD-HkemzDiSE0sfGPco',
+    apiKey: API_KEY,
     authDomain: 'wainapp-15c95.firebaseapp.com',
     databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
     projectID: 'wainapp',
@@ -26,7 +27,6 @@ export default function ListScreen({ navigation }) {
     const [search, setSearch] = useState()
     const [wines, setWines] = useState([])
     const [isFilterVisible, setFilterVisible] = useState(false)
-    const [isViewVisible, setViewVisible] = useState(false)
     const [isType, setType] = useState('all')
     const [selectedCountry, setSelectedCountry] = useState('None')
     const [isUrl, setUrl] = useState(BASE_URL);
