@@ -3,19 +3,12 @@ import { SafeAreaView, StatusBar, Alert, ActivityIndicator, LogBox } from 'react
 import { SearchFilter } from "./SearchFilter";
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../config/firebaseConf';
-import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import { saveItem, removeItem } from '../config/firebaseConf';
 import { API_URL } from "@env";
 
 LogBox.ignoreLogs(['Setting a timer']);
 
 const BASE_URL = API_URL
-
-const app = initializeApp(firebaseConfig)
-
-const database = getDatabase(app)
-
 
 export default function ListScreen({ navigation }) {
     const [search, setSearch] = useState()
@@ -81,45 +74,6 @@ export default function ListScreen({ navigation }) {
             setSearch()
         }
     }
-
-    const resetSearch = () => {
-        setUrl(BASE_URL)
-        getWines()
-    }
-
-
-    const saveItem = (item) => {
-        //console.log(item);
-        push(ref(database, 'wines/'), {
-            'name': item.name,
-            'type': item.type,
-            'img': item.img,
-            'country': item.country,
-            'description': item.description,
-            'id': item.id
-        })
-    }
-
-    const removeItem = (item) => {
-        //console.log(item.id, 'to be removed');
-        onValue(ref(database, 'wines/'), (snapshot) => {
-            const data = snapshot.val()
-            if (data === null) {
-                return;
-            } else {
-                const keyData = Object.entries(data)
-                //console.log(keyData);
-                for (const key of keyData) {
-                    const dbKey = key[0]
-                    if (key[1].id === item.id) {
-                        remove(ref(database, 'wines/' + dbKey))
-                        //console.log('data poistettu');
-                    }
-                }
-            }
-        })
-    }
-
 
     const selectItem = (index, item) => {
         if (selectedIndex.indexOf(index) > -1) {

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { firebaseConfig } from '../config/firebaseConf';
+import { firebaseConfig, removeItem } from '../config/firebaseConf';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import { getDatabase, ref, onValue } from 'firebase/database';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
 
-
-
 const app = initializeApp(firebaseConfig)
-
 const database = getDatabase(app)
 
 export default function FavoritesScreen({ navigation }) {
@@ -31,28 +28,8 @@ export default function FavoritesScreen({ navigation }) {
     //console.log(wines[0]);
 
 
-    const removeItem = (item) => {
-        //console.log(item.id, 'to be removed');
-        onValue(ref(database, 'wines/'), (snapshot) => {
-            const data = snapshot.val()
-            if (data === null) {
-                return;
-            } else {
-                const keyData = Object.entries(data)
-                //console.log(keyData);
-                for (const key of keyData) {
-                    const dbKey = key[0]
-                    if (key[1].id === item.id) {
-                        remove(ref(database, 'wines/' + dbKey))
-                        //console.log('data poistettu');
-                    }
-                }
-            }
-        })
-    }
-
     if (wines.length < 1) {
-        return <Text dark>You dont have any favorites yet, search redirection???</Text>
+        return <Text dark>You dont have any favorites yet...</Text>
     }
 
     return (

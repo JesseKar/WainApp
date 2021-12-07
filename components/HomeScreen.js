@@ -2,16 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StatusBar, Alert, ActivityIndicator } from 'react-native';
 import styled from 'styled-components/';
 import { AntDesign } from '@expo/vector-icons';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../config/firebaseConf';
-import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
+import { removeItem, saveItem } from '../config/firebaseConf';
 import { API_URL } from "@env";
 
 
 const SUGGEST_URL = API_URL
-
-const app = initializeApp(firebaseConfig)
-const database = getDatabase(app)
 
 export default function HomeScreen({ navigation }) {
 
@@ -47,39 +42,6 @@ export default function HomeScreen({ navigation }) {
         getSuggestions();
     }, [isUrl])
 
-    const saveItem = (item) => {
-        //console.log(item);
-        push(ref(database, 'wines/'), {
-            'name': item.name,
-            'type': item.type,
-            'img': item.img,
-            'country': item.country,
-            'description': item.description,
-            'id': item.id,
-        })
-    }
-
-    const removeItem = (item) => {
-        //console.log(item.id, 'to be removed');
-        onValue(ref(database, 'wines/'), (snapshot) => {
-            const data = snapshot.val()
-            if (data === null) {
-                return;
-            } else {
-                const keyData = Object.entries(data)
-                //console.log(keyData);
-                for (const key of keyData) {
-                    const dbKey = key[0]
-                    if (key[1].id === item.id) {
-                        remove(ref(database, 'wines/' + dbKey))
-                        //console.log('data poistettu');
-                    }
-                }
-            }
-        })
-    }
-
-
     const selectItem = (index, item) => {
         if (selectedIndex.indexOf(index) > -1) {
             let newArray = selectedIndex.filter((indexObject) => {
@@ -93,17 +55,6 @@ export default function HomeScreen({ navigation }) {
         } else {
             setSelectedIndex([...selectedIndex, index])
             saveItem(item)
-        }
-    }
-
-    const handleDoubleClick = (item) => {
-        let lastTap = null;
-        const now = Date.now()
-        const doublePressDelay = 300;
-        if (lastTap && (now - lastTap) < doublePressDelay) {
-            console.log('double press');
-        } else {
-            lastTap = now;
         }
     }
 

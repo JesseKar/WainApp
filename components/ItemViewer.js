@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
-import { firebaseConfig } from '../config/firebaseConf';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
-
-
-const app = initializeApp(firebaseConfig)
-
-const database = getDatabase(app)
+import { saveItem, removeItem } from '../config/firebaseConf';
 
 export const ItemViewer = ({ navigation, route }) => {
 
@@ -24,38 +17,6 @@ export const ItemViewer = ({ navigation, route }) => {
         wine.type = 'Valkoviini'
     } else if (wine.type === 'rose') {
         wine.type === 'Roseeviini'
-    }
-
-    const saveItem = (item) => {
-        //console.log(item);
-        push(ref(database, 'wines/'), {
-            'name': item.name,
-            'type': item.type,
-            'img': item.img,
-            'country': item.country,
-            'description': item.description,
-            'id': item.id,
-        })
-    }
-
-    const removeItem = (item) => {
-        //console.log(item.id, 'to be removed');
-        onValue(ref(database, 'wines/'), (snapshot) => {
-            const data = snapshot.val()
-            if (data === null) {
-                return;
-            } else {
-                const keyData = Object.entries(data)
-                //console.log(keyData);
-                for (const key of keyData) {
-                    const dbKey = key[0]
-                    if (key[1].id === item.id) {
-                        remove(ref(database, 'wines/' + dbKey))
-                        //console.log('data poistettu');
-                    }
-                }
-            }
-        })
     }
 
     const selectItem = (item) => {
