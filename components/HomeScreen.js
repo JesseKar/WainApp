@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StatusBar, Alert, ActivityIndicator } from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/';
 import { AntDesign } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from '../config/firebaseConf';
