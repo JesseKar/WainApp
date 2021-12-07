@@ -14,9 +14,6 @@ const database = getDatabase(app)
 
 export default function FavoritesScreen({ navigation }) {
     const [wines, setWines] = useState([])
-    const [selectedIndex, setSelectedIndex] = useState([])
-
-
     //console.log(wines);
 
     useEffect(() => {

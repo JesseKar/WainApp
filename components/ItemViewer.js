@@ -76,7 +76,6 @@ export const ItemViewer = ({ navigation, route }) => {
                 <SafeAreaView>
                     <MenuBar>
                         <Back>
-                            {/* Buttonilla takasi listaukseen?? */}
                             <AntDesign name="arrowleft" size={24} color="#FFF" onPress={() => navigation.navigate(routeFrom)} />
                             <Text style={{ marginLeft: 10 }}>Back</Text>
                         </Back>
@@ -104,7 +103,6 @@ export const ItemViewer = ({ navigation, route }) => {
                     <Text small dark bold>
                         {wine.description}
                     </Text>
-                    {/* LEARN MORE BUTTONI ALKON SIVULLE?? */}
                 </Description>
             </DescriptionContainer>
         </Container>

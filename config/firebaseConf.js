@@ -1,4 +1,3 @@
-//import firebase from 'firebase';
 import { API_KEY, AUTH_DOMAIN, DATABASE_URL, PROJECT_ID, STORAGE_BUCKET, SENDER_ID } from "@env";
 
 export default firebaseConfig = {
@@ -9,5 +8,3 @@ export default firebaseConfig = {
     storageBucket: STORAGE_BUCKET,
     messagingSenderId: SENDER_ID
 }
-
-//export default !firebase.getApps().length ? firebase.initializeApp(firebaseConfig) : firebase.getApp();
