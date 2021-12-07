@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { firebaseConfig } from '../config/firebaseConf';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
-import { API_KEY } from "@env"
 
 
-const firebaseConfig = {
-    apiKey: API_KEY,
-    authDomain: 'wainapp-15c95.firebaseapp.com',
-    databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
-    projectID: 'wainapp',
-    storageBucket: 'wainapp-15c95.appspot.com',
-    messagingSenderId: '666700246264'
-}
 
 const app = initializeApp(firebaseConfig)
+
 const database = getDatabase(app)
 
-export default function FavoritesScreen() {
+export default function FavoritesScreen({ navigation }) {
     const [wines, setWines] = useState([])
     const [selectedIndex, setSelectedIndex] = useState([])
 
@@ -75,9 +68,9 @@ export default function FavoritesScreen() {
                         renderItem={({ item, index }) => (
                             <Wine>
                                 <WineImage source={{ uri: item.img }} />
-                                <WineInfo >
-                                    <Text small heavy dark>{item.name}</Text>
-                                    <Text bold dark>{item.country} | {item.type}</Text>
+                                <WineInfo onPress={() => navigation.navigate('ItemViewer', { wine: item, from: 'FavoritesScreen' })}>
+                                    <Text large heavy dark>{item.name}</Text>
+                                    <Text small bold dark>{item.country} | {item.type}</Text>
                                 </WineInfo>
                                 <AntDesign name='delete' size={20} color='#000' onPress={() => removeItem(item)} />
                             </Wine>
@@ -147,7 +140,7 @@ const WineImage = styled.Image`
     border-radius: 8px;
 `;
 
-const WineInfo = styled.View`
+const WineInfo = styled.TouchableOpacity`
     flex: 1;
     margin-left: 12px;
     margin-right: 16px;

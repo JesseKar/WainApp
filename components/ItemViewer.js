@@ -2,22 +2,13 @@ import React, { useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
-
+import { firebaseConfig } from '../config/firebaseConf';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
-import { API_KEY } from "@env"
 
-
-const firebaseConfig = {
-    apiKey: API_KEY,
-    authDomain: 'wainapp-15c95.firebaseapp.com',
-    databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
-    projectID: 'wainapp',
-    storageBucket: 'wainapp-15c95.appspot.com',
-    messagingSenderId: '666700246264'
-}
 
 const app = initializeApp(firebaseConfig)
+
 const database = getDatabase(app)
 
 export const ItemViewer = ({ navigation, route }) => {

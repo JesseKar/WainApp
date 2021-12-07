@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,8 +33,19 @@ function HomeStackScreen() {
   )
 }
 
+function FavoritesStackScreen() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="FavoritesScreen" component={FavoritesScreen} />
+      <HomeStack.Screen name="ItemViewer" component={ItemViewer} />
+    </HomeStack.Navigator>
+  )
+}
+
 
 export default function App() {
+
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -58,7 +69,7 @@ export default function App() {
         })}>
         <Tab.Screen name="Home" component={HomeStackScreen} />
         <Tab.Screen name="List" component={ItemViewerStackScreen} />
-        <Tab.Screen name="Favs" component={FavoritesScreen} />
+        <Tab.Screen name="Favs" component={FavoritesStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>
 

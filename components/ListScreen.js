@@ -4,24 +4,18 @@ import { SearchFilter } from "./SearchFilter";
 import styled from 'styled-components';
 import { AntDesign } from '@expo/vector-icons';
 import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../config/firebaseConf';
 import { getDatabase, push, ref, onValue, remove } from 'firebase/database';
-import { API_URL, API_KEY } from "@env";
+import { API_URL } from "@env";
 
 LogBox.ignoreLogs(['Setting a timer']);
 
 const BASE_URL = API_URL
 
-const firebaseConfig = {
-    apiKey: API_KEY,
-    authDomain: 'wainapp-15c95.firebaseapp.com',
-    databaseURL: 'https://wainapp-15c95-default-rtdb.europe-west1.firebasedatabase.app/',
-    projectID: 'wainapp',
-    storageBucket: 'wainapp-15c95.appspot.com',
-    messagingSenderId: '666700246264'
-}
-
 const app = initializeApp(firebaseConfig)
+
 const database = getDatabase(app)
+
 
 export default function ListScreen({ navigation }) {
     const [search, setSearch] = useState()
@@ -31,6 +25,7 @@ export default function ListScreen({ navigation }) {
     const [selectedCountry, setSelectedCountry] = useState('None')
     const [isUrl, setUrl] = useState(BASE_URL);
     const [selectedIndex, setSelectedIndex] = useState([])
+    const [filterColor, setFilterColor] = useState('#fff')
 
 
     const getWines = () => {
@@ -58,6 +53,11 @@ export default function ListScreen({ navigation }) {
 
     useEffect(() => {
         getWines()
+        if (isUrl === BASE_URL) {
+            setFilterColor('#fff')
+        } else {
+            setFilterColor('#0000ff')
+        }
     }, [isUrl])
     //console.log(wines[0]);
 
@@ -145,7 +145,7 @@ export default function ListScreen({ navigation }) {
                     <SearchBar>
                         <SearchInput placeholder='search..' value={search} onChangeText={(text) => setSearch(text)} />
                         <AntDesign name="search1" size={35} color='#fff' onPress={handleSearch} />
-                        <AntDesign name="filter" size={35} color='#fff' onPress={toggleModal} />
+                        <AntDesign name="filter" size={35} color={filterColor} onPress={toggleModal} />
                     </SearchBar>
                 </SearchContainer>
                 <WineListContainer>
